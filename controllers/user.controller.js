@@ -1,7 +1,8 @@
 const { config } = require("dotenv")
 const fs = require('fs')
 // const data = fs.readFileSync('../users.json', 'utf-8')
-const data = fs.readFileSync(`${__dirname}\\users.json`);
+const data=require("../users.json")
+// const data = fs.readFileSync(`${__dirname}\\users.json`);
 const userData = JSON.parse(data)
 
 
@@ -19,7 +20,7 @@ module.exports.allUser = (req, res) => {
 }
 module.exports.saveUser = (req, res) => {
     
-        fs.readFile(`${__dirname}\\users.json`, (err, data) => {
+        fs.readFile(`users.json`, (err, data) => {
             if(err){
                res.send({error:"error occured"})
             }  
@@ -44,7 +45,7 @@ module.exports.saveUser = (req, res) => {
                    }
    
                    jsonData.push(userData)
-                   fs.writeFileSync(`${__dirname}\\users.json`, JSON.stringify(jsonData)) 
+                   fs.writeFileSync(`users.json`, JSON.stringify(jsonData)) 
                    res.send({success:'Data added successfully'})  
                } else {
                    res.send({error:"This id already available."})
@@ -74,7 +75,7 @@ module.exports.updateUser = (req, res) => {
             "photoUrl": req.body.photoUrl
         }
 
-        fs.readFile(`${__dirname}\\users.json`, (err, data) => {
+        fs.readFile(`users.json`, (err, data) => {
             let jsonData = JSON.parse(data)
             let available = false;
             jsonData.map(i => {
@@ -85,7 +86,7 @@ module.exports.updateUser = (req, res) => {
             if (available) {
                 let filteredData = jsonData.filter(i => i.id !== req.body.id)
                 filteredData.push(userData)
-                fs.writeFile(`${__dirname}\\users.json`, JSON.stringify(filteredData), (err) => {
+                fs.writeFile(`users.json`, JSON.stringify(filteredData), (err) => {
                     if (!err) {
                         res.send("Data updated successfully.")
                     }
@@ -108,7 +109,7 @@ module.exports.deleteUser = (req, res) => {
             res.send("id should be number")
         }
     } else {
-        fs.readFile(`${__dirname}\\users.json`, (err, data) => {
+        fs.readFile(`users.json`, (err, data) => {
             let jsonData = JSON.parse(data)
             let available = false;
             jsonData.map(i => {
@@ -119,7 +120,7 @@ module.exports.deleteUser = (req, res) => {
 
             if (available) {
                 let filteredData = jsonData.filter(i => i.id !== req.body.id)
-                fs.writeFile(`${__dirname}\\users.json`, JSON.stringify(filteredData), (err) => {
+                fs.writeFile(`users.json`, JSON.stringify(filteredData), (err) => {
                     if (!err) {
                         res.send("Data deleted successfully.")
                     }
